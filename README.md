@@ -47,7 +47,7 @@ Its purpose is to demonstrate how **mission problems, data, AI models, agents, t
 
 ---
 
-![MAIOS-1](./doc/screenshots/MAIOS-1.png)
+![MAIOS-1](./docs/screenshots/MAIOS-1.png)
 
 # 2. Why MAIOS?
 
@@ -131,7 +131,7 @@ MAIOS is organized into seven conceptual layers.
 
 <!-- Replace the path below with the actual public architecture image -->
 
-![MAIOS Architecture](./docs/screenshots/MAIOS-2.png)
+![MAIOS-2](./docs/screenshots/MAIOS-2.png)
 
 ---
 
@@ -223,7 +223,6 @@ The scenario is designed only as a technical PoC and uses **synthetic, non-sensi
 
 <!-- Replace with actual workflow image -->
 
-![Mission Workflow](docs/architecture/mission-workflow.png)
 
 ---
 
