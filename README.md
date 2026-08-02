@@ -1,571 +1,553 @@
-# MAIOS — Mission AI Operating System
+# MAIOS — Mission AI Reference Platform
 
-> **A Mission-Centric AI Platform for Defense AI Transformation**
-> Bridging military operational requirements and AI technology implementation.
+> **A synthetic-data-based reference architecture that translates mission problems into controlled AI workflows, deterministic tools, measurable outcomes, and human-governed decisions.**
 
-<p align="center">
-  <b>Defense Domain Expertise × Mission Architecture × AI Agents × Human-in-the-Loop × AI Platform Engineering</b>
-</p>
+MAIOS는 국방·공공 분야의 복잡한 **Mission Problem**을 데이터, 정책, AI Agent, Tool, Workflow, Evaluation, Human-in-the-Loop 구조로 변환하기 위한 개인 연구·포트폴리오 프로젝트입니다.
+
+> [!IMPORTANT]
+> 이 Repository는 MAIOS의 **Public Portfolio Showcase**입니다. 전체 구현 Source Code와 세부 Engineering Artifact는 비공개 Repository에서 관리합니다.
+>
+> 모든 Mission 데이터, 부대 식별자, 자원 수치, 규칙, 사건 및 결과는 소프트웨어 아키텍처 검증을 위해 생성한 **Synthetic Data**입니다. 실제 군 운용자료, C4I 데이터, 실제 부대 배치, 무기운용 로직 또는 외부체계 명령 기능을 포함하지 않습니다.
 
 ---
 
-## 1. Overview
+## Why MAIOS?
 
-**MAIOS (Mission AI Operating System)** is a mission-centric AI platform portfolio project designed to explore how real-world military mission requirements can be translated into an integrated AI system.
+```text
+Mission Organization
+"실제 Mission 문제는 이해하지만,
+이를 구현 가능한 AI 요구사항으로 표현하기 어렵다."
 
-The project started from a practical problem observed in Defense AI transformation:
+                    ↕
 
-> **AI companies have advanced technologies, while military organizations have complex mission requirements — but translating operational needs into implementable AI systems remains a major challenge.**
+          Mission–Technology
+            Translation Gap
 
-Based on approximately 30 years of military experience across operations, force development, defense planning, weapon-system-related projects, and international cooperation, I designed MAIOS as a reference architecture and working Proof of Concept (PoC) that connects:
+                    ↕
+
+AI / Technology Organization
+"모델과 플랫폼은 보유하지만,
+어떤 Mission 문제를 어떤 기준으로 해결해야 하는지 명확하지 않다."
+```
+
+MAIOS는 이 간극을 다음 구조로 연결합니다.
 
 ```text
 Mission Problem
       ↓
 Operational Concept
       ↓
-Mission Requirements
+Structured Requirements
       ↓
-Data Strategy & Governance
+Mission Data and Policy
       ↓
-Mission Data
+Controlled AI Workflow
       ↓
-AI Models & Knowledge
+Deterministic Mission Tools
       ↓
-AI Agents & Tools
+Independent Verification
       ↓
+Human Authorization
+      ↓
+Audit, Evaluation, and Monitoring
+```
+
+> **Mission Problem을 실행 가능하고 검증 가능한 AI System Workflow로 구조화하는 것**
+
+---
+
+## Core Design Principle
+
+> **AI generates.**  
+> **Tools calculate.**  
+> **Rules constrain.**  
+> **Verifier checks.**  
+> **Humans authorize.**  
+> **Actions remain controlled.**
+
+```text
+Generation        ≠ Calculation
+Calculation       ≠ Evaluation
+Verification      ≠ Authorization
+Approval          ≠ Automatic Execution
+Simulation        ≠ External-System Command
+Previous Approval ≠ Current Operational Validity
+```
+
+---
+
+## MAIOS 7-Layer Architecture
+
+```mermaid
+flowchart TB
+    L7["7. Air-Gap-Oriented MLOps<br/>CI/CD · GitOps · Monitoring · Model Operations"]
+    L6["6. Governance & Security<br/>HITL · Audit · Tool Allowlist · Validation"]
+    L5["5. Mission Workflow<br/>Context · Policy · COA · Approval · Replanning"]
+    L4["4. Multi-Agent Coordination<br/>Agent Contracts · Blackboard · Runtime Budgets"]
+    L3["3. AI Reasoning<br/>Provider Abstraction · Local/API Models"]
+    L2["2. Ontology & Knowledge<br/>Mission Facts · Context SSOT · Knowledge Graph"]
+    L1["1. Mission Data<br/>Structured Synthetic Data · PostgreSQL"]
+
+    L7 --> L6
+    L6 --> L5
+    L5 --> L4
+    L4 --> L3
+    L3 --> L2
+    L2 --> L1
+```
+
+| Layer | Purpose |
+|---|---|
+| Mission Data | 구조화된 Synthetic Mission Data와 영속성 |
+| Ontology & Knowledge | Mission Fact, Context SSOT, Entity Relationship |
+| AI Reasoning | Provider 추상화와 근거 기반 설명 생성 |
+| Multi-Agent Coordination | Agent Contract, Tool 권한, Runtime Budget |
+| Mission Workflow | Policy, Multi-COA, Verification, HITL, Replanning |
+| Governance & Security | Human Authority, Allowlist, Audit, Revision |
+| Air-Gap-Oriented MLOps | 배포, 관측성, GitOps, 모델 운영 경로 |
+
+> `Air-Gap-Oriented`는 폐쇄망 제약을 고려한 Reference Architecture라는 의미입니다. 실제 군 폐쇄망 운영 적합성이나 보안인증 완료를 주장하지 않습니다.
+
+---
+
+## Reference Mission — Synthetic K10 Resource Allocation
+
+현재 Reference Mission은 **Synthetic K10 Resource Allocation Scenario**입니다.
+
+가상의 지원자산과 지원대상 부대를 기반으로 다음을 검증합니다.
+
+- 동일 Mission Context에서 복수 COA 생성
+- 정책과 제약조건의 실행 가능한 Rule 평가
+- COA 생성과 독립 검증 분리
+- AI Recommendation과 Human Authorization 분리
+- 승인 이후 Action의 별도 통제
+- 상황 변경에 따른 기존 승인 유효성 재평가
+
+```mermaid
+flowchart LR
+    A["Synthetic Mission Data"]
+    B["Mission Context SSOT"]
+    C["Executable Policy"]
+    D["Multi-COA"]
+    E["Independent Verifier"]
+    F["Verifier-Gated HITL"]
+    G["Human Decision"]
+    H["Controlled Synthetic Action"]
+    I["Mission Event"]
+    J["Dynamic Replanning"]
+    K["Evaluation · Audit · Monitoring"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+    J --> K
+```
+
+### COA Strategies
+
+| Strategy | Primary Objective |
+|---|---|
+| Priority First | 우선순위가 높은 지원대상에 먼저 자원 배정 |
+| Coverage First | 지원대상 간 수요 충족률 균형 |
+| Resilience First | 고준비도 예비자원을 보존하고 위험 분산 |
+
+```text
+System Ranking ≠ Human Authorization
+```
+
+---
+
+## Demonstrated Capabilities
+
+| Capability | Demonstrated Evidence |
+|---|---|
+| Mission Context SSOT | Provenance-aware Mission Fact와 Versioned Context |
+| Executable Mission Policy | Rule Set, Severity, Operator, Evidence Fact ID |
+| Multi-COA Generation | Priority, Coverage, Resilience 후보 생성 |
+| Independent Verification | 결정론적 Replay, 제약조건, Lineage 검증 |
+| Verifier-Gated HITL | `VERIFIED` 상태에서만 Human Review 진입 |
+| Human Decision Lifecycle | Approve, Reject, Request Revision |
+| Controlled Synthetic Action | Allowlist, Risk Tier, 별도 Authorization |
+| Dynamic Replanning | 새 Mission Fact, Execution Hold, 재승인 |
+| Mission Orchestrator | 명시적 State Machine과 Artifact Lineage |
+| Saga Recovery | Checkpoint Recovery, Retry, Dead Letter Queue |
+| Contract-Governed Agents | Scope, Tool Permission, Runtime Budget |
+| Runtime Evaluation | Legacy와 Multi-Agent Parity 비교 |
+| Provider Evaluation | Schema, Evidence, Boundary, Repeatability |
+| Blind Human Review | Provider Identity를 숨긴 품질 평가 |
+| Golden Regression Gate | PASS, REVIEW, FAIL Release Gate |
+| Operational Observability | Metrics, Trace, Alert, Mission Control |
+| K10 End-to-End Demo | Timeline, Evidence Graph, HITL, Replanning |
+
+---
+
+## Governance and Safety Boundaries
+
+### Independent Verification
+
+Verifier는 다음을 독립적으로 확인합니다.
+
+- Mission Context와 Policy Lineage
+- Asset 및 Unit 존재 여부
+- 자산 중복 배정
+- Reserve와 Deployed Asset 분리
+- Availability와 Readiness Threshold
+- Allocation Limit
+- Deterministic Strategy Replay
+- Independent Metric Recalculation
+- Evidence Coverage와 Unsupported Reference
+
+```text
+Document Retrieval ≠ Executable Rule Evaluation
+Verification       ≠ Authorization
+```
+
+모든 K10 Rule은 Software Architecture 검증을 위한 Synthetic Training Rule이며 실제 군 교리, ROE 또는 SOP가 아닙니다.
+
+### Controlled Action
+
+| Risk Tier | Description | Showcase Policy |
+|---:|---|---|
+| 0 | Read-only | Allowed |
+| 1 | Draft or structured export | Verified approval required |
+| 2 | Internal simulation-state update | Separate authorization required |
+| 3 | External-system action | Blocked |
+
+현재 허용 범위는 보고서 Draft, 승인된 COA의 구조화 Export, 내부 Synthetic Simulation으로 제한됩니다.
+
+### Dynamic Replanning
+
+```text
+Approved COA
+      ↓
+Synthetic Mission Event
+      ↓
+New Mission Fact and Context
+      ↓
+Impact Analysis
+      ├── No Replan → Existing COA Remains Valid
+      └── Replan Required
+                ↓
+           Execution Hold
+                ↓
+           Policy Re-evaluation
+                ↓
+           Multi-COA Regeneration
+                ↓
+           Independent Verification
+                ↓
+           Human Reapproval
+```
+
+기존 Human Decision은 Audit History에 남고 새로운 상황은 새로운 Revision을 생성합니다.
+
+---
+
+## Contract-Governed Multi-Agent Runtime
+
+MAIOS의 Agent는 제한 없는 Autonomous Process가 아닙니다.
+
+- Readable / Writable Blackboard Scope
+- Allowed Tools
+- Maximum Tool Calls
+- Runtime Timeout
+- Recommendation / Approval / Execution Authority
+
+```text
+may_recommend = true
+may_authorize = false
+may_execute = false
+```
+
+| Agent | Responsibility |
+|---|---|
+| Context Agent | Mission Context 요약 |
+| Planner Agent | Multi-COA 생성 |
+| Constraint Agent | 제약조건 검토 |
+| Risk Agent | 결정론적 위험 평가 |
+| Verifier Agent | 독립 검증 |
+| Commander Support Agent | Evidence 기반 Recommendation |
+
+### Safe Runtime Migration
+
+```text
+legacy_only
+= Legacy Planning and Verification
+
+shadow_compare
+= Legacy remains authoritative
++ Multi-Agent Runtime executes for evaluation
+
+multi_agent
+= Contract-Governed Runtime becomes authoritative
+```
+
+```text
+Legacy Baseline
+      ↓
+Shadow Comparison
+      ↓
+Parity Evaluation
+      ↓
+Human Review
+      ↓
+Controlled Activation
+```
+
+---
+
+## Evaluation and Regression Gate
+
+### Evaluation Scope
+
+- Runtime Parity와 Candidate COA Overlap
+- Selected COA Agreement
+- Verification 및 HITL Readiness Parity
+- Context와 Policy Lineage
+- Tool Permission 및 Execution Authority Boundary
+- JSON Schema와 Evidence Reference Validity
+- Recommendation Repeatability
+- P50 / P95 Latency와 Token Usage
+
+Structural Score는 Semantic Truth, Military Validity 또는 Operational Suitability를 입증하지 않습니다.
+
+### Blind Human Review
+
+| Dimension | Scale |
+|---|---:|
+| Clarity | 1–5 |
+| Evidence Alignment | 1–5 |
+| Uncertainty Calibration | 1–5 |
+| Decision-Support Utility | 1–5 |
+| Overclaim Control | 1–5 |
+
+### Golden Regression Gate
+
+```text
+PASS
+= Required thresholds and safety gates satisfied
+
+REVIEW
+= No critical safety violation,
+  but quality or performance review required
+
+FAIL
+= Runtime, Schema, Evidence,
+  or Authority Boundary violation
+```
+
+---
+
+## Verification Snapshot
+
+다음은 특정 Local Release Candidate Audit 시점의 결과입니다.
+
+| Check | Result |
+|---|---:|
+| Automated tests | **159 passed** |
+| OpenAPI paths | **105** |
+| Python compile | **PASS** |
+| Application import | **PASS** |
+| Test collection | **PASS** |
+| Docker Compose validation | **PASS** |
+| API contract validation | **PASS** |
+| Environment file tracking | **PASS** |
+| Manual secret review | **PASS** |
+
+> 이 결과는 해당 Audit 시점의 Snapshot입니다. 구현 변경 이후에는 동일한 검증을 다시 수행해야 합니다. 원본 Audit Log, Secret Scan Log, Credential 및 로컬 Runtime Artifact는 공개하지 않습니다.
+
+---
+
+## Operational Observability
+
+```text
 Mission Workflow
       ↓
-Human-in-the-Loop
+Metrics · Trace · Audit Event
       ↓
-Mission Evaluation
-```
-
-MAIOS is not intended to replace existing command-and-control systems.
-
-Its purpose is to demonstrate how **mission problems, data, AI models, agents, tools, human judgment, and operational workflows** can be connected through a common AI platform architecture.
-
----
-
-![MAIOS-1](./docs/screenshots/MAIOS-1.png)
-
-# 2. Why MAIOS?
-
-Defense AI projects often begin with available technologies:
-
-* Large Language Models
-* Computer Vision
-* Retrieval-Augmented Generation
-* AI Agents
-* Knowledge Graphs
-* MLOps Platforms
-
-However, successful Defense AI transformation should begin with the mission.
-
-```text
-Technology-Driven Approach
-
-AI Model
-   ↓
-Find a Use Case
-   ↓
-Attempt Integration
-```
-
-MAIOS takes the opposite approach.
-
-```text
-Mission-Driven Approach
-
-Mission Problem
-   ↓
-Operational Concept
-   ↓
-Mission Requirement
-   ↓
-Required Data
-   ↓
-AI Capability
-   ↓
-Agent / Tool / Workflow
-   ↓
-Human Decision Support
-```
-
-The central design principle of MAIOS is:
-
-> **AI technology should be selected and orchestrated based on mission requirements, rather than forcing missions to adapt to a specific AI model.**
-
----
-
-# 3. MAIOS Architecture
-
-MAIOS is organized into seven conceptual layers.
-
-```text
-┌──────────────────────────────────────────────────────────┐
-│  7. Air-Gapped MLOps Layer                               │
-│     Deployment · Monitoring · Evaluation · Operations    │
-├──────────────────────────────────────────────────────────┤
-│  6. AI Governance & Security Layer                       │
-│     HITL · Audit · Access Control · AI Governance        │
-├──────────────────────────────────────────────────────────┤
-│  5. Mission Workflow Layer                               │
-│     Mission Workflow · OODA · Human-AI Collaboration     │
-├──────────────────────────────────────────────────────────┤
-│  4. Multi-Agent Coordination Layer                       │
-│     Agents · Tool Calling · Task Coordination            │
-├──────────────────────────────────────────────────────────┤
-│  3. AI Reasoning Layer                                   │
-│     LLM · RAG · Reasoning · Model Provider               │
-├──────────────────────────────────────────────────────────┤
-│  2. Ontology & Knowledge Layer                           │
-│     Mission Knowledge · Relationships · Context          │
-├──────────────────────────────────────────────────────────┤
-│  1. Mission Data Layer                                   │
-│     Structured · Unstructured · Operational Data         │
-└──────────────────────────────────────────────────────────┘
-```
-
-> The architecture is designed to separate mission applications from individual AI models and infrastructure technologies.
-
-<!-- Replace the path below with the actual public architecture image -->
-
-![MAIOS-2](./docs/screenshots/MAIOS-2.png)
-
----
-
-# 4. Core Design Principles
-
-## Mission First
-
-AI implementation begins with a clearly defined mission problem rather than a specific model or technology.
-
-## Model Independence
-
-Mission workflows should not be tightly coupled to a single foundation model.
-
-MAIOS therefore introduces a **Model Provider Abstraction Layer** so different AI models can be connected without redesigning the entire mission application.
-
-## Tool-Augmented AI
-
-AI agents should not rely only on language generation.
-
-They should be able to interact with deterministic mission tools, data sources, and analytical functions.
-
-## Human-in-the-Loop
-
-AI recommendations in mission-critical environments should remain reviewable and controllable by human decision-makers.
-
-## Evaluation by Mission Value
-
-AI performance should ultimately be evaluated not only by model metrics, but also by how effectively it supports mission outcomes.
-
-## Deployability in Restricted Environments
-
-Defense AI platforms must consider environments with limited or disconnected external network access.
-
-MAIOS therefore includes the concept of **Air-Gapped AI Operations and MLOps** as part of the architecture.
-
----
-
-# 5. Implemented Capabilities
-
-The MAIOS PoC was implemented incrementally around several core capabilities.
-
-## 5.1 Model Provider Abstraction
-
-A provider-independent model interface separates mission workflow logic from individual AI models.
-
-```text
-Mission Application
-        ↓
-Model Provider Interface
-        ↓
-┌─────────────┬─────────────┬─────────────┐
-│ Local Model │ External AI │ Future Model│
-└─────────────┴─────────────┴─────────────┘
-```
-
-This architecture allows different foundation models to be evaluated or integrated while preserving the mission application layer.
-
-For enterprise and defense deployments, this design can support future integration with sovereign or organization-specific foundation models.
-
----
-
-## 5.2 End-to-End Mission Workflow
-
-MAIOS includes an end-to-end mission workflow based on a synthetic defense logistics scenario.
-
-The workflow demonstrates the transition from:
-
-```text
-Mission Request
+Prometheus · OpenTelemetry
       ↓
-Input Validation
+Grafana · Tempo · Alertmanager
       ↓
-Mission Context Analysis
-      ↓
-AI Reasoning
-      ↓
-Mission Tool Execution
-      ↓
-Candidate Recommendation
-      ↓
-Human Review / Approval
-      ↓
-Mission Result
-      ↓
-Evaluation & Audit
+Mission Control
 ```
 
-The scenario is designed only as a technical PoC and uses **synthetic, non-sensitive data**.
+관측 대상에는 Workflow Transition, Mission Operation Latency, Provider Failure, Pending Approval, Blocked Release, Execution Hold, Replanning, Recovery Retry, Dead Letter 및 Error Budget Burn이 포함됩니다.
 
-<!-- Replace with actual workflow image -->
-
+Alert는 COA 승인, Execution Hold 해제 또는 외부 Action을 자동 수행하지 않습니다.
 
 ---
 
-## 5.3 Tool Calling
+## Technology Stack
 
-MAIOS connects AI reasoning with structured mission tools.
+| Area | Technology |
+|---|---|
+| Language / API | Python / FastAPI |
+| Validation / ORM | Pydantic / SQLAlchemy |
+| Data | PostgreSQL / Neo4j |
+| Local Model Serving | Ollama |
+| Models | Llama 3.2 / EXAONE 3.5 / Upstage Solar |
+| Agent Architecture | Contract-Governed Multi-Agent |
+| Mission Logic | Deterministic Algorithms |
+| Governance | HITL + Audit + Revision |
+| Evaluation | Runtime / Provider / Human Review |
+| Monitoring / Tracing | Prometheus / OpenTelemetry / Tempo |
+| Dashboard | Grafana / Streamlit |
+| Deployment | Docker / Kubernetes / Argo CD |
+| CI/CD / Registry | GitHub Actions / GHCR |
+| Testing | pytest |
 
-This enables the AI layer to use deterministic functions instead of attempting to solve every problem through text generation alone.
+---
 
-Conceptually:
+## My Role
+
+MAIOS는 개인 Mission AI System Engineering 포트폴리오로 설계·구현했습니다.
+
+### Mission and Domain
+
+- Mission Problem Definition
+- Operational Concept Structuring
+- Mission Requirement Translation
+- Synthetic K10 Reference Scenario
+- Governance and Authority Boundary Design
+
+### AI System Engineering
+
+- Mission Context SSOT와 Executable Policy
+- Provider Abstraction과 Controlled Tool Calling
+- Multi-Agent Contract
+- Evaluation과 Regression Gate
+
+### Backend and Platform
+
+- FastAPI, PostgreSQL, Neo4j
+- Docker와 Kubernetes Deployment Path
+- Prometheus, Grafana, OpenTelemetry
+- CI/CD와 Release Candidate Validation
+
+### Demonstration
+
+- K10 End-to-End Demo Story
+- Mission Timeline과 Evidence Graph
+- HITL Decision Flow
+- Dynamic Replanning Scenario
+- Architecture Briefing Material
+
+---
+
+## Public Showcase Scope
 
 ```text
-User / Mission Request
-        ↓
-AI Agent
-        ↓
-Tool Selection
-        ↓
-Structured Tool Input
-        ↓
-Mission Analysis Function
-        ↓
-Tool Result
-        ↓
-AI-Assisted Recommendation
+Public maios-showcase
+= Executive Story
++ Architecture
++ Demo Flow
++ Verification Evidence
++ Personal Contribution
++ Limitations
+
+Private MAIOS
+= Full Implementation
++ Tests
++ Engineering Artifacts
++ Detailed Configuration
 ```
 
-This architecture is intended to improve:
+공개하지 않는 항목:
 
-* Reliability
-* Explainability
-* Repeatability
-* Integration with existing systems
+- 전체 Source Code
+- 내부 Rule과 Prompt
+- 상세 API Payload
+- Credential과 환경설정
+- Raw Benchmark Result
+- Audit 및 Secret Scan Log
+- Security Configuration
 
 ---
 
-## 5.4 Human-in-the-Loop (HITL)
+## Scope and Limitations
 
-MAIOS introduces explicit human review points in the mission workflow.
+MAIOS는 개인 포트폴리오 및 연구용 **Mission AI Reference Architecture and Decision-Support Prototype**입니다.
+
+### Not Included
+
+- Classified Information
+- Actual Military Operational Data
+- Real C4I Data
+- Real Unit Deployment Data
+- Real Weapon Employment Logic
+- Autonomous Weapon Control
+- External-System Command Execution
+- Military Network Accreditation
+- Operational Certification
+- Production HA/DR Certification
+
+### Security Limitations
+
+- Audit Trail은 Application-level Append-only 구조입니다.
+- Cryptographic Immutability를 주장하지 않습니다.
+- 실제 Zero Trust 통합 완료를 주장하지 않습니다.
+- 실제 폐쇄망 보안인증 완료를 주장하지 않습니다.
+- 실제 작전 적합성 또는 군사적 유효성을 주장하지 않습니다.
+
+---
+
+## Roadmap
+
+### Portfolio Improvements
+
+- Architecture Diagram 고도화
+- K10 Demo Screenshot와 Walkthrough
+- Degraded Mode Demonstration
+- Public Validation Summary
+- Executive Brief와 Interview Demo Package
+
+### Technical Extensions
+
+- Advanced Mission Ontology와 GraphRAG
+- Multiple Mission Tools
+- Expanded Agent Contracts
+- RBAC와 Zero Trust Integration
+- Offline Model Registry
+- SBOM과 Artifact Signing
+- Cryptographic Audit Integrity
+
+Roadmap 항목은 구현 완료를 의미하지 않습니다.
+
+---
+
+## Key Takeaway
 
 ```text
-AI Analysis
-     ↓
-AI Recommendation
-     ↓
-Human Review
-  ↙       ↓       ↘
-Approve  Revise   Reject
-     ↓
-Mission Workflow Continues
+Foundation Model    → Replaceable
+Mission Workflow    → Persistent
+Mission Tools       → Controlled
+Mission Calculation → Deterministic
+Evaluation          → Independent
+Final Authority     → Human
 ```
 
-The objective is not full autonomous decision-making.
-
-The objective is:
-
-> **AI-assisted decision support with human authority and accountability.**
+> **Translate Mission Problems into controlled, measurable, and human-governed AI workflows.**
 
 ---
 
-## 5.5 Mission Evaluation
+## Author
 
-MAIOS includes an evaluation concept designed to assess AI outputs in the context of a mission workflow.
+**Park** — [GitHub @cptpark01](https://github.com/cptpark01)
 
-The evaluation layer is intended to support questions such as:
-
-* Was the mission workflow successfully completed?
-* Did the AI use the appropriate tools?
-* Was human intervention required?
-* Was the recommendation consistent with mission constraints?
-* Can the decision process be reviewed afterward?
-
-This approach extends evaluation beyond conventional LLM response quality toward **mission-oriented AI evaluation**.
+- Mission / Defense Domain Experience
+- M.S. in Electrical Engineering
+- AI System Engineering
+- Mission AI Platform
+- AI DevOps / MLOps
+- Defense AX
 
 ---
 
-## 5.6 Observability
-
-The platform includes observability concepts and components for monitoring AI services and mission APIs.
-
-Implemented technologies include:
-
-* Prometheus
-* Grafana
-* Application metrics
-* API health monitoring
-
-<!-- Replace with actual screenshot -->
-
-![Monitoring](./docs/screenshots/Day28-Grafana-1.png)
-
----
-
-# 6. Demonstration Scenario
-
-## K10 Ammunition Resupply Decision-Support Workflow
-
-The MAIOS demonstration uses a simplified and synthetic K10 ammunition resupply scenario to show how an operational problem can be converted into an AI-assisted mission workflow.
-
-The objective of the demonstration is **not to reproduce an actual military operational system**.
-
-Instead, the scenario demonstrates the system-engineering process:
-
-```text
-Operational Problem
-        ↓
-Mission Requirements
-        ↓
-Structured Mission Data
-        ↓
-AI Reasoning
-        ↓
-Mission Tool Calling
-        ↓
-Candidate Course of Action
-        ↓
-Human Review
-        ↓
-Evaluation
-```
-
-The scenario was selected because logistics and resource-allocation problems provide a clear way to demonstrate the relationship between:
-
-* Domain requirements
-* Data
-* AI reasoning
-* Optimization tools
-* Human judgment
-
-All publicly presented data and scenarios are synthetic and non-sensitive.
-
----
-
-# 7. Technology Stack
-
-| Area               | Technology                          |
-| ------------------ | ----------------------------------- |
-| Backend            | Python, FastAPI                     |
-| API                | REST API                            |
-| Data               | PostgreSQL                          |
-| Knowledge          | Knowledge / Ontology Architecture   |
-| AI Integration     | Model Provider Abstraction          |
-| AI Workflow        | Agent-based Workflow                |
-| AI Capability      | LLM, Tool Calling                   |
-| Governance         | Human-in-the-Loop                   |
-| Evaluation         | Mission-oriented Evaluation         |
-| Containerization   | Docker                              |
-| Monitoring         | Prometheus, Grafana                 |
-| Deployment Concept | On-Premise / Air-Gapped Environment |
-
-The project focuses less on a single technology and more on **how multiple technologies can be integrated around a mission workflow**.
-
----
-
-# 8. From Mission Requirement to AI System
-
-One of the primary objectives of MAIOS is to demonstrate the translation process between military domain requirements and AI system requirements.
-
-| Mission Perspective   | AI / System Perspective |
-| --------------------- | ----------------------- |
-| Mission Problem       | AI Use Case             |
-| Operational Concept   | System Workflow         |
-| Mission Requirement   | Functional Requirement  |
-| Operational Data      | AI Data Requirement     |
-| Commander / Operator  | Human-in-the-Loop       |
-| Staff Function        | AI Agent / Tool         |
-| Decision Process      | Mission Workflow        |
-| Mission Effectiveness | Mission Evaluation      |
-| Security Constraint   | Deployment Architecture |
-
-This translation layer is where I believe **Defense Domain Expertise and AI System Engineering must meet**.
-
----
-
-# 9. My Contribution
-
-This portfolio project was independently planned and developed as part of my transition into Defense AI and AI platform roles.
-
-My contribution includes:
-
-* Identification of Defense AI implementation challenges
-* Mission problem definition
-* Operational concept development
-* Mission requirement structuring
-* MAIOS platform architecture design
-* Mission workflow design
-* Model Provider architecture
-* Tool Calling workflow
-* Human-in-the-Loop design
-* Mission Evaluation design
-* FastAPI-based service implementation
-* Container-based environment configuration
-* Monitoring and observability integration
-* PoC testing and iterative improvement
-* Documentation and architecture communication
-
-AI-assisted development tools were actively used during implementation.
-
-However, the project's:
-
-* Problem definition
-* Architecture direction
-* Functional priorities
-* Mission scenario
-* System integration decisions
-* Validation process
-
-were defined and managed by the author.
-
----
-
-# 10. What I Learned
-
-Building MAIOS reinforced several lessons.
-
-### 1. Defense AI is not only a model problem.
-
-Successful AI adoption requires the integration of mission requirements, data, workflows, security, governance, and operations.
-
-### 2. Domain experts and AI engineers need a common architecture.
-
-Military users often describe operational problems, while AI teams think in terms of models, data, APIs, and infrastructure.
-
-A successful Defense AI organization needs people who can translate between both domains.
-
-### 3. AI Agents require tools and governance.
-
-In mission-critical environments, autonomous text generation is not enough.
-
-AI systems require structured tools, validation, human oversight, evaluation, and auditability.
-
-### 4. The AI model should be replaceable.
-
-Mission applications should survive changes in foundation models.
-
-This is why MAIOS separates mission workflows from individual model providers.
-
----
-
-# 11. Relevance to Enterprise Defense AI
-
-MAIOS represents my approach to Defense AI business and system development:
-
-```text
-Understand the Mission
-        ↓
-Identify the Real Problem
-        ↓
-Translate Requirements
-        ↓
-Define Required Data
-        ↓
-Design the AI Architecture
-        ↓
-Build a PoC
-        ↓
-Evaluate Mission Value
-        ↓
-Develop toward Deployment
-```
-
-My long-term objective is to work at the intersection of:
-
-> **Defense Mission Expertise × AI Technology × System Architecture × Business Development**
-
-and contribute to transforming real operational requirements into deployable AI capabilities.
-
----
-
-# 12. Public Repository Scope
-
-This repository is a **public portfolio showcase**.
-
-For security and intellectual-property considerations, the following are intentionally not included:
-
-* Full source code
-* Detailed agent orchestration logic
-* Internal prompts
-* Detailed mission logic
-* Detailed evaluation logic
-* Security configuration
-* Deployment credentials
-* Sensitive or operational military data
-
-The complete implementation is maintained separately in a private development repository.
-
-This public showcase contains only generalized architecture, technical concepts, synthetic demonstration scenarios, and selected implementation results.
-
----
-
-# 13. Project Status
-
-```text
-[Completed] Mission AI Architecture
-[Completed] Model Provider Abstraction
-[Completed] End-to-End Mission Workflow
-[Completed] Tool Calling
-[Completed] Human-in-the-Loop
-[Completed] Mission Evaluation
-[Completed] Monitoring / Observability
-[Ongoing]  Foundation Model Evaluation and Integration
-[Ongoing]  Architecture Refinement for Enterprise Defense AI
-```
-
----
-![demo-1](./docs/screenshots/Day30-1.png)
-![demo-2](./docs/screenshots/Day30-2.png)
-![demo-3](./docs/screenshots/Day30-3.png)
-![demo-4](./docs/screenshots/Day30-4.png)
-
-
-# 14. About the Author
-
-Military domain professional transitioning into Defense AI and AI platform development.
-
-Background includes:
-
-* Approximately 30 years of military experience
-* Military operations and planning
-* Force development and defense projects
-* Weapon-system-related research and planning experience
-* International military cooperation
-* Defense AI and AI platform architecture
-* M.S. in Electrical Engineering
-
-My focus is not only on developing AI technology itself, but on answering a broader question:
-
-> **How can AI technology be transformed into a system that solves real mission problems?**
-
----
-
-## Disclaimer
-
-MAIOS is an independent portfolio and technical research project.
-
-It is not an official military system or government project.
-
-All publicly presented scenarios and data are synthetic, generalized, or based on non-sensitive conceptual examples.
-
-No classified, restricted, or operationally sensitive information is included in this repository.
-
----
-
-<p align="center">
-  <b>MAIOS — From Mission Problems to Mission AI Systems</b>
-</p>
+> **Mission problems should not be handed directly to an LLM. They should be structured into controlled, testable, measurable, and human-governed AI workflows.**
