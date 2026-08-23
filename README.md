@@ -1,5 +1,20 @@
 # MAIOS — Mission AI Reference Platform
 
+<!-- MAIOS-LIVE-DEMO -->
+
+## ▶ Live K10 Showcase Demo
+
+**[Launch MAIOS K10 Live Demo](https://cptpark01.github.io/maios-showcase/)**
+
+Experience the synthetic MAIOS mission decision-support workflow directly in your browser.
+
+`Mission Context → COA → Verification → Human Decision → Controlled Simulation → Mission Event → Dynamic Replanning → Child HITL`
+
+> Browser-only public showcase. No installation, Docker, database, model, API key, real military data, or external-system command capability is required.
+
+---
+
+
 > **A synthetic-data-based reference architecture that translates mission problems into controlled AI workflows, deterministic tools, measurable outcomes, and human-governed decisions.**
 
 MAIOS는 국방·공공 분야의 복잡한 **Mission Problem**을 데이터, 정책, AI Agent, Tool, Workflow, Evaluation, Human-in-the-Loop 구조로 변환하기 위한 개인 연구·포트폴리오 프로젝트입니다.
