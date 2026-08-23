@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MAIOS — K10 Mission Decision-Support Showcase</title>
+<style>
+  :root{
+    --bg:#0b1020; --panel:#121a2d; --panel2:#17223a; --line:#263555;
+    --text:#edf3ff; --muted:#9fb0cc; --accent:#6ec7ff; --good:#70df9b;
+    --warn:#ffd166; --bad:#ff7a8a; --chip:#1d2a46;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:linear-gradient(180deg,#09101e,#10192b 55%,#0b1020);
+    color:var(--text); font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  .wrap{max-width:1380px;margin:0 auto;padding:28px}
+  .hero{
+    display:flex;gap:20px;align-items:flex-start;justify-content:space-between;
+    padding:24px;border:1px solid var(--line);background:rgba(18,26,45,.92);border-radius:18px;
+    box-shadow:0 16px 50px rgba(0,0,0,.25)
+  }
+  h1{margin:0 0 8px;font-size:30px}
+  .sub{color:var(--muted);line-height:1.6;max-width:820px}
+  .badge{display:inline-flex;padding:6px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--line);font-size:12px;color:#cfe3ff;margin:4px 6px 0 0}
+  .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:18px}
+  .panel{background:rgba(18,26,45,.94);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .panel h2{font-size:17px;margin:0 0 14px}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .metric{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .metric small{display:block;color:var(--muted);margin-bottom:6px}
+  .metric b{font-size:15px;word-break:break-word}
+  .flow{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
+  .step{padding:12px 8px;border-radius:12px;border:1px solid var(--line);background:#10182a;text-align:center;color:var(--muted);font-size:12px;min-height:64px;display:flex;align-items:center;justify-content:center}
+  .step.active{color:#06111b;background:var(--accent);border-color:var(--accent);font-weight:700}
+  .step.done{color:#062014;background:var(--good);border-color:var(--good);font-weight:700}
+  .controls{display:flex;flex-wrap:wrap;gap:10px}
+  button{
+    appearance:none;border:1px solid var(--line);background:#172541;color:var(--text);
+    padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer
+  }
+  button:hover{filter:brightness(1.12)}
+  button.primary{background:var(--accent);color:#06111b;border-color:var(--accent)}
+  button.good{background:var(--good);color:#062014;border-color:var(--good)}
+  button.warn{background:var(--warn);color:#241900;border-color:var(--warn)}
+  button.bad{background:var(--bad);color:#2a050a;border-color:var(--bad)}
+  button:disabled{opacity:.35;cursor:not-allowed}
+  .notice{padding:12px;border-radius:10px;background:#0f1a30;border:1px solid var(--line);color:#c7d6ee;line-height:1.5}
+  .timeline{max-height:380px;overflow:auto;border-top:1px solid var(--line)}
+  .event{display:grid;grid-template-columns:150px 1fr 130px;gap:10px;padding:10px 0;border-bottom:1px solid #1e2a45;font-size:13px}
+  .event .t{color:var(--muted)}
+  .event .s{font-weight:700}
+  .event .v{text-align:right;color:#b7c5db}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:10px;border-bottom:1px solid #22304f;text-align:left}
+  th{color:var(--muted);font-weight:600}
+  .status{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:12px;border:1px solid var(--line);background:var(--chip)}
+  .ok{color:var(--good)} .hold{color:var(--warn)} .danger{color:var(--bad)}
+  .lineage{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .lineage div{padding:10px;border:1px solid var(--line);border-radius:10px;background:#10182a;font-size:12px}
+  code{color:#cde7ff}
+  footer{color:var(--muted);font-size:12px;line-height:1.6;margin:20px 4px}
+  @media(max-width:1000px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.flow{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <h1>MAIOS — K10 Mission Decision-Support Showcase</h1>
+      <div class="sub">
+        국방 임무 문제를 <b>Mission Context → COA → Independent Verification → Human Authorization → Controlled Action → Event-driven Replanning</b>
+        흐름으로 연결한 공개용 제한 데모입니다. 모든 데이터와 상황은 합성(Synthetic)이며, 실제 군 데이터·C4I 연동·운용 알고리즘·내부 온톨로지·상세 규칙은 포함하지 않습니다.
+      </div>
+      <div>
+        <span class="badge">Synthetic Data Only</span>
+        <span class="badge">No Real C4I Interface</span>
+        <span class="badge">No Autonomous Weapon Control</span>
+        <span class="badge">Public Showcase Replay</span>
+      </div>
+    </div>
+    <div class="notice" style="max-width:330px">
+      <b>Core message</b><br/>
+      AI generates. Tools calculate. Rules constrain. Verifier checks. Humans authorize. Actions remain controlled. Events trigger replanning.
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:18px">
+    <h2>Mission Control</h2>
+    <div class="metrics">
+      <div class="metric"><small>Workflow</small><b id="workflowState">idle</b></div>
+      <div class="metric"><small>HITL</small><b id="hitlState">-</b></div>
+      <div class="metric"><small>Execution Hold</small><b id="holdState">OFF</b></div>
+      <div class="metric"><small>Verifier</small><b id="verifierState">-</b></div>
+    </div>
+    <div class="flow" id="flow">
+      <div class="step" data-step="0">Mission Context</div>
+      <div class="step" data-step="1">COA Generation</div>
+      <div class="step" data-step="2">Independent Verification</div>
+      <div class="step" data-step="3">Human Decision</div>
+      <div class="step" data-step="4">Controlled Action</div>
+      <div class="step" data-step="5">Mission Event</div>
+      <div class="step" data-step="6">Dynamic Replanning</div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Interactive Demo</h2>
+      <div class="controls">
+        <button class="primary" id="startBtn">1. Baseline Demo 실행</button>
+        <button class="good" id="approve1Btn" disabled>2. Human 승인</button>
+        <button id="actionBtn" disabled>3. Action Request</button>
+        <button id="authorizeBtn" disabled>4. Authorization</button>
+        <button class="good" id="executeBtn" disabled>5. Synthetic Execute</button>
+        <button class="warn" id="eventBtn" disabled>6. Allocated Asset Failure</button>
+        <button id="revisionBtn" disabled>7. Verified Revision 제출</button>
+        <button class="good" id="approve2Btn" disabled>8. Child HITL 승인</button>
+        <button class="bad" id="resetBtn">Reset</button>
+      </div>
+      <div class="notice" id="message" style="margin-top:14px">
+        Baseline Demo를 실행하면 합성 Mission Context와 3개 COA가 생성되고, Verifier를 거쳐 첫 Human Approval Gate가 열립니다.
+      </div>
+
+      <h2 style="margin-top:20px">Current COA</h2>
+      <table>
+        <thead><tr><th>Asset</th><th>Assignment</th><th>Readiness</th><th>Role</th></tr></thead>
+        <tbody id="coaTable"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Decision & Safety</h2>
+      <table>
+        <tbody>
+          <tr><th>Selected COA</th><td id="selectedCoa">-</td></tr>
+          <tr><th>Policy</th><td id="policy">-</td></tr>
+          <tr><th>Verifier</th><td id="verifier">-</td></tr>
+          <tr><th>HITL Case</th><td id="hitlCase">-</td></tr>
+          <tr><th>Action Mode</th><td id="actionMode">simulation-only</td></tr>
+          <tr><th>External Side Effect</th><td><span class="status ok">false</span></td></tr>
+          <tr><th>Replanning</th><td id="replanning">NONE</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:20px">Lineage</h2>
+      <div class="lineage">
+        <div>Context<br/><code id="contextId">-</code></div>
+        <div>COA Package<br/><code id="packageId">-</code></div>
+        <div>Verification<br/><code id="verificationId">-</code></div>
+        <div>Gated HITL<br/><code id="gatedId">-</code></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Mission Timeline</h2>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Public Evidence</h2>
+      <table>
+        <tbody>
+          <tr><th>Baseline Context</th><td><span class="status ok">PASS</span></td></tr>
+          <tr><th>Multi-COA Generation</th><td><span class="status ok">PASS</span></td></tr>
+          <tr><th>Independent Verification</th><td><span class="status ok">PASS</span></td></tr>
+          <tr><th>Human-in-the-Loop</th><td><span class="status ok">PASS</span></td></tr>
+          <tr><th>Controlled Simulation</th><td><span class="status ok">PASS</span></td></tr>
+          <tr><th>Dynamic Replanning</th><td><span class="status ok">PASS</span></td></tr>
+          <tr><th>Lineage Integrity</th><td><span class="status ok">PASS</span></td></tr>
+          <tr><th>Automated Test Evidence</th><td><b>159 passed</b></td></tr>
+        </tbody>
+      </table>
+      <div class="notice" style="margin-top:14px">
+        이 공개 데모는 실제 MAIOS 엔진을 배포하지 않습니다. 버튼 조작은 검증된 합성 E2E 흐름을 브라우저에서 재현하는 제한형 Showcase Replay입니다.
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    MAIOS Mission AI Reference Platform / Decision-Support Prototype — Public Showcase Edition.<br/>
+    Synthetic scenario only. No operational accreditation. No real military data, C4I interface, autonomous weapon control, production credentials, internal ontology, detailed rules, prompts, or proprietary mission algorithms are included.
+  </footer>
+</div>
+
+<script>
+const S = {
+  stage:-1, workflow:"idle", hitl:"-", hold:false, verifier:"-", policy:"-",
+  action:"-", replan:"NONE", events:[], selected:"-", context:"-", pkg:"-", verId:"-", gate:"-"
+};
+
+const ids = x => document.getElementById(x);
+const shortId = prefix => prefix + "-" + Math.random().toString(16).slice(2,10);
+
+function addEvent(type, state){
+  const now = new Date().toLocaleTimeString();
+  S.events.push({time:now,type,state,version:S.events.length+1});
+  render();
+}
+function setMsg(t){ ids("message").innerHTML=t; }
+
+function render(){
+  ids("workflowState").textContent=S.workflow;
+  ids("hitlState").textContent=S.hitl;
+  ids("holdState").textContent=S.hold?"ON":"OFF";
+  ids("holdState").className=S.hold?"danger":"ok";
+  ids("verifierState").textContent=S.verifier;
+  ids("selectedCoa").textContent=S.selected;
+  ids("policy").textContent=S.policy;
+  ids("verifier").textContent=S.verifier;
+  ids("hitlCase").textContent=S.gate;
+  ids("replanning").textContent=S.replan;
+  ids("contextId").textContent=S.context;
+  ids("packageId").textContent=S.pkg;
+  ids("verificationId").textContent=S.verId;
+  ids("gatedId").textContent=S.gate;
+
+  document.querySelectorAll(".step").forEach(el=>{
+    const n=Number(el.dataset.step);
+    el.classList.remove("active","done");
+    if(n<S.stage) el.classList.add("done");
+    if(n===S.stage) el.classList.add("active");
+  });
+
+  ids("startBtn").disabled=S.stage>=0;
+  ids("approve1Btn").disabled=!(S.stage===3 && S.hitl==="pending_approval" && !S.replan.startsWith("REVISION"));
+  ids("actionBtn").disabled=!(S.workflow==="approved" && S.action==="-");
+  ids("authorizeBtn").disabled=!(S.action==="pending_authorization");
+  ids("executeBtn").disabled=!(S.action==="authorized");
+  ids("eventBtn").disabled=!(S.workflow==="executed" && S.replan==="NONE");
+  ids("revisionBtn").disabled=!(S.replan==="verified_ready_for_revision");
+  ids("approve2Btn").disabled=!(S.replan==="REVISION_SUBMITTED" && S.hitl==="pending_approval");
+
+  ids("timeline").innerHTML=S.events.slice().reverse().map(e=>
+    `<div class="event"><div class="t">${e.time}</div><div class="s">${e.type}</div><div class="v">v${e.version} · ${e.state}</div></div>`
+  ).join("");
+
+  const baseline = [
+    ["K10-D01","UNIT-ALPHA","95","allocated"],
+    ["K10-D02","UNIT-BRAVO","90","allocated"],
+    ["K10-D03","RESERVE","80","reserve"]
+  ];
+  const replanned = [
+    ["K10-D02","UNIT-ALPHA","90","allocated"],
+    ["K10-D03","UNIT-BRAVO","80","allocated"],
+    ["K10-D01","UNAVAILABLE","0","failed"]
+  ];
+  const rows = (S.replan==="NONE" ? baseline : replanned);
+  ids("coaTable").innerHTML = S.stage<1 ? "" : rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
+}
+
+ids("startBtn").onclick=()=>{
+  S.stage=3; S.workflow="pending_approval"; S.hitl="pending_approval"; S.verifier="verified"; S.policy="passed";
+  S.selected="coa-coverage-first"; S.context=shortId("ctx"); S.pkg=shortId("pkg"); S.verId=shortId("verify"); S.gate=shortId("hitl");
+  addEvent("workflow_created","created");
+  addEvent("context_ready","context_ready");
+  addEvent("policy_passed","policy_passed");
+  addEvent("coa_generated","coa_generated");
+  addEvent("independent_verification","verified");
+  addEvent("human_gate_created","pending_approval");
+  setMsg("<b>Human Decision 필요.</b> Verifier는 verified이지만 Authorization은 별도입니다.");
+};
+
+ids("approve1Btn").onclick=()=>{
+  S.workflow="approved"; S.hitl="approved"; S.stage=4;
+  addEvent("human_decision","approved");
+  setMsg("첫 Human Approval 완료. 이제 Controlled Action은 별도 Authorization을 거쳐야 합니다.");
+};
+
+ids("actionBtn").onclick=()=>{
+  S.action="pending_authorization"; S.workflow="action_pending_authorization";
+  addEvent("action_requested","action_pending_authorization");
+  setMsg("Action Request 생성. 승인과 실행은 분리되어 있습니다.");
+  render();
+};
+
+ids("authorizeBtn").onclick=()=>{
+  S.action="authorized"; S.workflow="action_authorized";
+  addEvent("action_authorized","action_authorized");
+  setMsg("별도 Action Authorization 완료. 실행은 아직 수행되지 않았습니다.");
+  render();
+};
+
+ids("executeBtn").onclick=()=>{
+  S.action="executed"; S.workflow="executed"; S.stage=5;
+  addEvent("action_executed","executed");
+  setMsg("Synthetic Simulation만 실행됨. External side effect = false.");
+};
+
+ids("eventBtn").onclick=()=>{
+  S.stage=6; S.workflow="replan_required"; S.replan="verified_ready_for_revision"; S.hold=true;
+  S.context=shortId("ctx2"); S.pkg=shortId("pkg2"); S.verId=shortId("verify2");
+  addEvent("mission_event","asset_unavailable");
+  addEvent("replanning_triggered","replan_required");
+  addEvent("reverification","verified_ready_for_revision");
+  setMsg("<b>Execution Hold ON.</b> 기존 승인을 재사용하지 않고 새 Context/COA/Verification이 생성되었습니다.");
+};
+
+ids("revisionBtn").onclick=()=>{
+  S.workflow="pending_approval"; S.replan="REVISION_SUBMITTED"; S.hitl="pending_approval"; S.gate=shortId("child-hitl");
+  addEvent("revision_submitted","pending_approval");
+  setMsg("새 Child HITL 생성. 재계획안도 다시 Human Approval을 받아야 합니다.");
+  render();
+};
+
+ids("approve2Btn").onclick=()=>{
+  S.workflow="approved"; S.replan="COMPLETED"; S.hitl="approved"; S.hold=false;
+  addEvent("human_decision","approved");
+  addEvent("replanning_completed","approved");
+  setMsg("<b>Closed-loop 완료.</b> Child HITL 승인 후 Execution Hold가 해제되었습니다.");
+  render();
+};
+
+ids("resetBtn").onclick=()=>{
+  Object.assign(S,{stage:-1,workflow:"idle",hitl:"-",hold:false,verifier:"-",policy:"-",action:"-",replan:"NONE",events:[],selected:"-",context:"-",pkg:"-",verId:"-",gate:"-"});
+  setMsg("Baseline Demo를 실행하면 합성 Mission Context와 3개 COA가 생성되고, Verifier를 거쳐 첫 Human Approval Gate가 열립니다.");
+  render();
+};
+render();
+</script>
+</body>
+</html>
