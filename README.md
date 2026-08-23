@@ -566,3 +566,34 @@ Final Authority     → Human
 ---
 
 > **Mission problems should not be handed directly to an LLM. They should be structured into controlled, testable, measurable, and human-governed AI workflows.**
+
+<!-- MAIOS-SHOWCASE-SCOPE -->
+
+## What the Live Demo Shows
+
+The K10 Live Demo is a **browser-based synthetic showcase replay**
+of the MAIOS mission decision-support workflow.
+
+```text
+Mission Context
+→ Multi-COA
+→ Independent Verification
+→ Human Decision
+→ Controlled Simulation
+→ Mission Event
+→ Dynamic Replanning
+→ Child HITL
+→ Human Reapproval
+Public Showcase Boundary
+
+The public demo intentionally does not include:
+
+Private MAIOS backend source code
+Real military or C4I data
+Production credentials
+Detailed internal ontology, rules, or prompts
+Autonomous weapon control
+External-system command capability
+
+The private implementation, tests, and engineering records
+are maintained separately from this public showcase.
