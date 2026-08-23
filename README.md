@@ -567,6 +567,88 @@ Final Authority     → Human
 
 > **Mission problems should not be handed directly to an LLM. They should be structured into controlled, testable, measurable, and human-governed AI workflows.**
 
+<!-- MAIOS-K10-VISUAL-EVIDENCE -->
+
+## K10 End-to-End Engineering Evidence
+
+The following screenshots are captured from the private MAIOS reference implementation using a **synthetic K10 mission scenario**.
+
+They show the progression from mission understanding and COA generation to evidence-based verification, human authorization, controlled action, and event-driven replanning.
+
+### 1. Mission Context → Multi-COA → Verification
+
+![K10 Baseline Mission Workflow](assets/screenshots/01-k10-baseline.png)
+
+The baseline workflow structures the mission context, generates multiple courses of action, and evaluates them before any human authorization.
+
+---
+
+### 2. Evidence & Decision Lineage
+
+![MAIOS Evidence Graph](assets/screenshots/02-evidence-graph.png)
+
+Mission Context, policy evaluation, COA package, verification evidence, and downstream decision artifacts are linked so that the decision process can be traced rather than treated as an opaque LLM response.
+
+---
+
+### 3. Human-Governed Decision
+
+![MAIOS Human Governance](assets/screenshots/03-human-governance.png)
+
+MAIOS separates **verification from authorization**.
+
+```text
+AI / Planner
+→ Deterministic Tools
+→ Independent Verifier
+→ Human Decision
+→ Controlled Action
+```
+
+A verified recommendation is not automatically approved or executed.
+
+---
+
+### 4. Mission Event → Dynamic Replanning
+
+![MAIOS Dynamic Replanning Event](assets/screenshots/04-dynamic-replanning-1.png)
+
+When mission conditions change, MAIOS treats the event as new mission evidence and reassesses the validity of the previously approved plan.
+
+```text
+Mission Event
+→ New Mission Fact
+→ New Context
+→ Replanning Required
+→ Execution Hold
+```
+
+---
+
+### 5. Reverification → Child HITL → Closed Loop
+
+![MAIOS Dynamic Replanning Closed Loop](assets/screenshots/04-dynamic-replanning-2.png)
+
+The revised plan is independently verified again and routed through a new Human-in-the-Loop decision before the execution hold is released.
+
+```text
+Replanning
+→ Reverification
+→ Child HITL
+→ Human Reapproval
+→ Execution Hold Released
+```
+
+### Core Engineering Principle
+
+> **AI generates. Tools calculate. Rules constrain.  
+> Verifier checks. Humans authorize.  
+> Actions remain controlled. Events trigger replanning.**
+
+**[▶ Launch MAIOS K10 Live Demo](https://cptpark01.github.io/maios-showcase/index.html?v=160b13a)**
+
+---
+
 <!-- MAIOS-SHOWCASE-SCOPE -->
 
 ## What the Live Demo Shows
