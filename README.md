@@ -4,7 +4,7 @@
 
 ## ▶ Live K10 Showcase Demo
 
-**[Launch MAIOS K10 Live Demo](https://cptpark01.github.io/maios-showcase/)**
+**[Launch MAIOS K10 Live Demo](https://cptpark01.github.io/maios-showcase/index.html?v=160b13a)**
 
 Experience the synthetic MAIOS mission decision-support workflow directly in your browser.
 
