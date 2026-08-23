@@ -584,16 +584,18 @@ Mission Context
 → Dynamic Replanning
 → Child HITL
 → Human Reapproval
-Public Showcase Boundary
+```
 
-The public demo intentionally does not include:
+### Public Showcase Boundary
 
-Private MAIOS backend source code
-Real military or C4I data
-Production credentials
-Detailed internal ontology, rules, or prompts
-Autonomous weapon control
-External-system command capability
+The public demo intentionally does **not** include:
+
+- Private MAIOS backend source code
+- Real military or C4I data
+- Production credentials
+- Detailed internal ontology, rules, or prompts
+- Autonomous weapon control
+- External-system command capability
 
 The private implementation, tests, and engineering records
 are maintained separately from this public showcase.
